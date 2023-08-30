@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/bootstrap/bootstrap.bundle.js"></script>
     <link rel="stylesheet" href="css/style2.css">
     <title>Dashboard</title>
 </head>
@@ -31,11 +31,72 @@
 
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offCanvasExample" aria-labelledby="offCanvasExampleLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offCanvasExampleLabel">Offcanvas</h5>
+            <h5 class="offcanvas-title text-white" id="offCanvasExampleLabel">Transact</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            Transaction Form Container
+            <small class="card-text text-white">
+                Choose an option below to perform a transaction
+            </small>
+            <select name="transact-type" class="form-control my-3" id="">
+                <option value="">-- Select transact type--</option>
+                <option value="payment">Payment</option>
+                <option value="transfer">Transfer</option>
+                <option value="deposit">Deposit</option>
+                <option value="withdraw">Withdraw</option>
+            </select>
+            <div class="card payment-card">
+                <div class="card-body">
+                    <div class="form-group mb-2">
+                        <label for="">Account Holder / Beneficiary</label>
+                        <input type="text" name="beneficiary" class="form-control"  placeholder="Account Holder / Beneficiary Account">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="">Beneficiary Account Number</label>
+                        <input type="text" name="account_number" class="form-control" placeholder="Beneficiary Account No">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Select account</label>
+                        <select name="account_id" class="form-control my-1" id="">
+                            <option value="">Select account</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="">Reference</label>
+                        <input type="text" name="reference" class="form-control"  placeholder="Reference">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="">Payment Amount</label>
+                        <input type="text" name="payment_amount" class="form-control" placeholder="Payment Amount">
+                    </div>
+                    <div class="form-group mb2">
+                        <button id="" class="btn btn-md transact-btn">Pay</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card transfer-card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="">Select account</label>
+                        <select name="account_id" class="form-control my-1" id="">
+                            <option value="">Select account</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Select account</label>
+                        <select name="account_id" class="form-control my-1" id="">
+                            <option value="">Select account</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="">Transfer Amount</label>
+                        <input type="text" name="transfer_amount" class="form-control" placeholder="Transfer Amount">
+                    </div>
+                    <div class="form-group mb2">
+                        <button id="" class="btn btn-md transact-btn">Transfer</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
