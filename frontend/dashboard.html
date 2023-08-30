@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="js/bootstrap.bundle.js"></script>
     <link rel="stylesheet" href="css/style2.css">
     <title>Dashboard</title>
 </head>
@@ -22,10 +23,97 @@
             <div class="display-name ms-auto text-white">
                 <i class="fa fa-circle text-success me-2"></i>Welcome: <span>Customer Name</span>
             </div>
-            <a href="" class="btn btn-sm text-white">
+            <a href="index.html" class="btn btn-sm text-white">
                 <i class="fa fa-sign-out ms-2 me-1"></i> Sign out
             </a>
         </div>
     </header>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offCanvasExample" aria-labelledby="offCanvasExampleLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offCanvasExampleLabel">Offcanvas</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            Transaction Form Container
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasRight" aria-labelledby="offCanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 id="offCanvasRightLabel">Offc Right</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            Accounts Form Container               
+        </div>
+    </div>
+
+    <div class="container d-flex">
+        <button id="add-account-btn" class="btn btn-lg shadow" type="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasRight" aria-controls="offCanvasRight">
+            <i class="fa fa-credit-card me-1"></i>Add New Account
+        </button>
+        <button id="transact-btn" class="btn btn-lg ms-auto shadow" data-bs-toggle="offcanvas" data-bs-target="#offCanvasExample" aria-controls="offCanvasExample">
+            <i class="fa fa-wallet me-1"></i>Transact
+        </button>
+    </div>
+    <div class="container mt-5">
+        <h1>Accordion Example</h1>
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Section 1
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        Content for section 1 goes here.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Section 2
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        Content for section 2 goes here.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Section 3
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        Content for section 3 goes here.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="card no-accounts-card">
+            <div class="card-body">
+                <h1 class="card-title">
+                    <i class="fa fa-ban text-danger"></i> No Registered Accounts
+                </h1>
+                <hr>
+                <div class="card-text">
+                    You currently do not have any regeistered accounts. <br> Please click below to register / add new account.
+                </div>
+                <br>
+                <button class="btn btn-lg btn-primary shadow" type="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasRight" aria-controls="offCanvasRight">
+                    <i class="fa fa-credit-card me-1"></i>Add New Account
+                </button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

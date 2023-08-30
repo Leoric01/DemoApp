@@ -34,3 +34,28 @@ body{
 .display-name {
     font-weight: 600;
 }
+
+#transact-btn{
+    background-color: #FFB114;
+    border: 1px solid #543800;
+}
+
+#add-account-btn{
+    background-color: #FF4E00;
+    border: 1px solid #8B2B00;
+    color: white;
+}
+
+#transact-btn:hover{
+    background-color: #5a514d; 
+    opacity: 1;
+}
+
+#add-account-btn:hover{
+    background-color: #5a514d; 
+    opacity: 1;
+}
+
+.container{
+    margin: 10px auto;
+}
