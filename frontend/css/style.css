@@ -72,3 +72,11 @@ body{
     margin: 10px 0px;
     box-shadow: 0px 3px 6px rgb(0,14,53);
 }
+
+#errorcard{
+    box-shadow: 0px 3px 6px rgb(0,14,53);
+}
+
+.errormsg{
+    font-size: 15px;
+}
