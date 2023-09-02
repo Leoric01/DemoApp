@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RegistrationController {
 
-    @Autowired
     private final UserService userService;
 
+    @Autowired
     public RegistrationController(UserService userService) {
         this.userService = userService;
     }
