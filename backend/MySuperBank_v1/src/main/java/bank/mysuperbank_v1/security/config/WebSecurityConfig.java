@@ -1,4 +1,4 @@
-package bank.mysuperbank_v1.config;
+package bank.mysuperbank_v1.security.config;
 
 
 import org.springframework.context.annotation.Bean;

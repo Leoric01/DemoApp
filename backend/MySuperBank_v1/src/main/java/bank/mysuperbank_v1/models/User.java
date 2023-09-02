@@ -22,10 +22,12 @@ public class User {
     private int verified_at;
     private Long created_at;
     private Long updated_at;
-    private String role;
 
     public User() {
     }
+
+    @ManyToOne
+    private Role role;
 
     @OneToMany
     private List<Account> accounts = new ArrayList<>();
@@ -135,11 +137,11 @@ public class User {
         return id;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }
