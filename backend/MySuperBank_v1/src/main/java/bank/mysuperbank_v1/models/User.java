@@ -30,9 +30,6 @@ public class User {
     public User() {
     }
 
-    @ManyToOne
-    private Role role;
-
     @OneToMany
     private List<Account> accounts = new ArrayList<>();
 
