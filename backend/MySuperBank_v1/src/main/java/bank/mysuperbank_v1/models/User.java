@@ -22,13 +22,16 @@ public class User {
     private int verified_at;
     private Long created_at;
     private Long updated_at;
-
+  
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
-
+  
     public User() {
     }
+
+    @ManyToOne
+    private Role role;
 
     @OneToMany
     private List<Account> accounts = new ArrayList<>();
@@ -145,5 +148,4 @@ public class User {
     public Long getId() {
         return id;
     }
-
 }

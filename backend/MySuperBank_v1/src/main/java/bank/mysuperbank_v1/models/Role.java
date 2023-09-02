@@ -7,20 +7,15 @@ import java.util.List;
 
 @Entity
 public class Role {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    
     @OneToMany
     private List<User> users = new ArrayList<>();
 
-
-
     public Role() {
     }
-
 
     public Role(String name, List<User> users) {
         this.name = name;
