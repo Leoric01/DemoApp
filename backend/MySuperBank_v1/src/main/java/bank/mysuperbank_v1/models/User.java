@@ -22,7 +22,11 @@ public class User {
     private int verified_at;
     private Long created_at;
     private Long updated_at;
-
+  
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    private Role role;
+  
     public User() {
     }
 
@@ -39,6 +43,14 @@ public class User {
         this.password = password;
         this.verified = false;
         this.created_at = Instant.now().getEpochSecond();
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getFirstName() {
@@ -135,13 +147,5 @@ public class User {
 
     public Long getId() {
         return id;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 }
