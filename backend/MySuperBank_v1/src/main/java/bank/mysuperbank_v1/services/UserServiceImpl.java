@@ -1,6 +1,7 @@
 package bank.mysuperbank_v1.services;
 
 import bank.mysuperbank_v1.models.DTOs.UserDto;
+import bank.mysuperbank_v1.models.Role;
 import bank.mysuperbank_v1.models.User;
 import bank.mysuperbank_v1.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registerUser(UserDto userDto) {
         User user = new User(userDto.getFirstName(), userDto.getLastName(),userDto.getEmail(), passwordEncoder.encode(userDto.getPassword()));
-        user.setRole("USER");
+        user.setRole(new Role("USER"));
         userRepository.save(user);
         return null;
     }
