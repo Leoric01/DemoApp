@@ -14,6 +14,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
+    @Column(length = 60)
     private String password;
     private String token;
     private int code;
@@ -21,6 +22,7 @@ public class User {
     private int verified_at;
     private Long created_at;
     private Long updated_at;
+    private String role;
 
     public User() {
     }
@@ -131,5 +133,13 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
