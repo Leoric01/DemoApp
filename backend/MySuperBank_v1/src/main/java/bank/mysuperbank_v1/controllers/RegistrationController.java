@@ -6,6 +6,7 @@ import bank.mysuperbank_v1.models.User;
 import bank.mysuperbank_v1.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,9 +24,9 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@RequestBody UserDto userDto){
+    public ResponseEntity<?> registerUser(@RequestBody UserDto userDto){
         User user = userService.registerUser(userDto);
         publisher.publishEvent(new RegistrationCompleteEvent(user, "url"));
-        return "Success";
+        return ResponseEntity.status(200).build();
     }
 }
