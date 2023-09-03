@@ -4,6 +4,7 @@ import bank.mysuperbank_v1.event.RegistrationCompleteEvent;
 import bank.mysuperbank_v1.models.DTOs.UserRequestDto;
 import bank.mysuperbank_v1.models.DTOs.UserResponseDto;
 import bank.mysuperbank_v1.models.User;
+import bank.mysuperbank_v1.security.authentication.AuthenticationRequest;
 import bank.mysuperbank_v1.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -29,5 +30,9 @@ public class RegistrationController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserRequestDto userRequestDto){
         return userService.registerUser(userRequestDto);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<Object> loginUser(@RequestBody AuthenticationRequest loginDetails){
+        return ResponseEntity.status(200).body(userService.login(loginDetails));
     }
 }

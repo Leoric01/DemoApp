@@ -5,30 +5,40 @@ import bank.mysuperbank_v1.models.DTOs.UserResponseDto;
 import bank.mysuperbank_v1.models.ErrorResponse;
 import bank.mysuperbank_v1.models.User;
 import bank.mysuperbank_v1.repositories.UserRepository;
+import bank.mysuperbank_v1.security.authentication.AuthenticationRequest;
+import bank.mysuperbank_v1.security.authentication.AuthenticationResponse;
+import bank.mysuperbank_v1.security.config.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider tokenProvider;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(AuthenticationManager authenticationManager, JwtTokenProvider tokenProvider, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.authenticationManager = authenticationManager;
+        this.tokenProvider = tokenProvider;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -37,14 +47,49 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
-        return new org.springframework.security.core.userdetails.User(user.getFirstName(), user.getPassword(), authorities);
+        return (UserDetails) userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
+
+    @Override
+    public AuthenticationResponse login (AuthenticationRequest loginDetails){
+        String username = loginDetails.getUsername();
+        String password = loginDetails.getPassword();
+
+        if (username == null || username.isBlank()) {
+            throw new IllegalArgumentException("Username is required.");
+        }
+        if (username.length() < 4) {
+            throw new IllegalArgumentException("Invalid username.");
+        }
+        if (password == null || password.isBlank()) {
+            throw new IllegalArgumentException("Password is required.");
+        }
+        if (!userRepository.existsByUsername(username)) {
+            throw new BadCredentialsException("Unregistered username!");
+        }
+        User user = userRepository.findUserByUsername(username);
+        if (!verifyUser(username, password)) {
+            throw new BadCredentialsException("Password is not matching for this username!");
+        }
+        AuthenticationResponse auth = new AuthenticationResponse(generateToken(loginDetails.getUsername(), loginDetails.getPassword()));
+        return auth;
+    }
+
+
+
+    @Override
+    public boolean verifyUser(String username, String password) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NoSuchElementException("User not found"));
+        return new BCryptPasswordEncoder().matches(password, user.getPassword());
+    }
+
+    @Override
+    public String generateToken(String username, String password) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return tokenProvider.generateToken(authentication);
+    }
+
 
     @Override
     public ResponseEntity<?> registerUser(UserRequestDto userRequestDto) {
