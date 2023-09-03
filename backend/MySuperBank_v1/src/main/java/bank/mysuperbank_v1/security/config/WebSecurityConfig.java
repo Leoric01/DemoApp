@@ -19,13 +19,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig{
-    private final UserService userService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public WebSecurityConfig(UserService userService, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtTokenProvider jwtTokenProvider) {
-        this.userService = userService;
+    public WebSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtTokenProvider jwtTokenProvider) {
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtTokenProvider = jwtTokenProvider;
     }
@@ -38,18 +36,13 @@ public class WebSecurityConfig{
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().authenticated()
                 )
+                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 
 
     @Bean
-    public JwtRequestFilter jwtAuthenticationFilter() {
-        return new JwtRequestFilter(userService, jwtAuthenticationEntryPoint, jwtTokenProvider);
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
