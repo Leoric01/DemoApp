@@ -7,6 +7,7 @@ import bank.mysuperbank_v1.models.User;
 import bank.mysuperbank_v1.repositories.UserRepository;
 import bank.mysuperbank_v1.security.authentication.AuthenticationRequest;
 import bank.mysuperbank_v1.security.authentication.AuthenticationResponse;
+import bank.mysuperbank_v1.security.config.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -25,15 +26,14 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
+    private final JwtService jwtService;
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
 
-    @Override
-    public String generateToken(String username, String password) {
-        return null;
-    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (!verifyUser(username, password)) {
             throw new BadCredentialsException("Password is not matching for this username!");
         }
-        AuthenticationResponse auth = new AuthenticationResponse(generateToken(loginDetails.getUsername(), loginDetails.getPassword()));
+        AuthenticationResponse auth = new AuthenticationResponse(generateToken(user));
         return auth;
     }
 
@@ -73,6 +73,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return new BCryptPasswordEncoder().matches(password, user.getPassword());
     }
 
+    @Override
+    public String generateToken(UserDetails userDetails) {
+        return jwtService.generateToken(userDetails);
+    }
 
 
     @Override
