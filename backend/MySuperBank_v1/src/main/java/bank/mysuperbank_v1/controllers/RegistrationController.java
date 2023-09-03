@@ -1,9 +1,6 @@
 package bank.mysuperbank_v1.controllers;
 
-import bank.mysuperbank_v1.event.RegistrationCompleteEvent;
 import bank.mysuperbank_v1.models.DTOs.UserRequestDto;
-import bank.mysuperbank_v1.models.DTOs.UserResponseDto;
-import bank.mysuperbank_v1.models.User;
 import bank.mysuperbank_v1.security.authentication.AuthenticationRequest;
 import bank.mysuperbank_v1.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
