@@ -11,6 +11,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String username;
     private String firstName;
     private String lastName;
     private String email;
@@ -40,6 +41,14 @@ public class User {
         this.password = password;
         this.verified = false;
         this.created_at = Instant.now().getEpochSecond();
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Role getRole() {
