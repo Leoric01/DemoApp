@@ -28,7 +28,6 @@ public class WebSecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .build();
-
     }
 }
 

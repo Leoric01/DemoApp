@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -92,7 +94,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (verifySameEmail(userRequestDto.getEmail())) {
             return ResponseEntity.status(409).body(new ErrorResponse("Email already exists"));
         }
-        User user = new User(userRequestDto.getUsername(), userRequestDto.getFirstname(), userRequestDto.getLastname(), userRequestDto.getEmail(), userRequestDto.getPassword());
+        User user = new User(userRequestDto.getUsername(), userRequestDto.getFirstname(), userRequestDto.getLastname(), userRequestDto.getEmail(), passwordEncoder.encode(userRequestDto.getPassword()));
         userRepository.save(user);
         UserResponseDto userResponseDTO = new UserResponseDto();
         userResponseDTO.setId(userRepository.findUserByEmail(user.getEmail()).getId());
@@ -102,6 +104,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userResponseDTO.setEmail(user.getEmail());
 
         return ResponseEntity.status(201).body(userResponseDTO);
+    }
+
+    @Override
+    public List<UserResponseDto> getAllUserResponseDto() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(user -> {
+                    UserResponseDto userResponseDto = new UserResponseDto();
+                    userResponseDto.setId(user.getId());
+                    userResponseDto.setUsername(user.getUsername());
+                    userResponseDto.setFirstName(user.getFirstName());
+                    userResponseDto.setLastName(user.getLastName());
+                    userResponseDto.setEmail(user.getEmail());
+                    return userResponseDto;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
