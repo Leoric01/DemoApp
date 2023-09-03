@@ -2,11 +2,9 @@ package bank.mysuperbank_v1.services;
 
 import bank.mysuperbank_v1.models.DTOs.UserRequestDto;
 import bank.mysuperbank_v1.models.DTOs.UserResponseDto;
-import bank.mysuperbank_v1.models.User;
 import bank.mysuperbank_v1.security.authentication.AuthenticationRequest;
 import bank.mysuperbank_v1.security.authentication.AuthenticationResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +19,6 @@ public interface UserService {
 
     boolean verifySameName(String username);
     boolean verifySameEmail(String email);
-
-    UserDetails loadUserByUsername(String username);
 
     AuthenticationResponse login(AuthenticationRequest loginDetails);
     boolean verifyUser(String username, String password);

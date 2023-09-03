@@ -7,19 +7,13 @@ import bank.mysuperbank_v1.models.User;
 import bank.mysuperbank_v1.repositories.UserRepository;
 import bank.mysuperbank_v1.security.authentication.AuthenticationRequest;
 import bank.mysuperbank_v1.security.authentication.AuthenticationResponse;
-import bank.mysuperbank_v1.security.config.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -30,20 +24,16 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    private AuthenticationManager authenticationManager;
-
-    private final JwtTokenProvider tokenProvider;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
     @Autowired
-    public UserServiceImpl( JwtTokenProvider tokenProvider, UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.tokenProvider = tokenProvider;
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
-
+    @Override
+    public String generateToken(String username, String password) {
+        return null;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -83,12 +73,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return new BCryptPasswordEncoder().matches(password, user.getPassword());
     }
 
-    @Override
-    public String generateToken(String username, String password) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return tokenProvider.generateToken(authentication);
-    }
 
 
     @Override
@@ -139,7 +123,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (verifySameEmail(userRequestDto.getEmail())) {
             return ResponseEntity.status(409).body(new ErrorResponse("Email already exists"));
         }
-        User user = new User(userRequestDto.getUsername(), userRequestDto.getFirstname(), userRequestDto.getLastname(), userRequestDto.getEmail(), passwordEncoder.encode(userRequestDto.getPassword()));
+        User user = new User(userRequestDto.getUsername(), userRequestDto.getFirstname(), userRequestDto.getLastname(), userRequestDto.getEmail(), userRequestDto.getPassword());
         userRepository.save(user);
         UserResponseDto userResponseDTO = new UserResponseDto();
         userResponseDTO.setId(userRepository.findUserByEmail(user.getEmail()).getId());
