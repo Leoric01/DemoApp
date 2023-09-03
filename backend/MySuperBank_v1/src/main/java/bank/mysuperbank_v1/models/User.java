@@ -34,11 +34,12 @@ public class User {
     @OneToMany
     private List<Account> accounts = new ArrayList<>();
 
-    public User(String firstName, String lastName, String email, String password) {
+    public User(String username, String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.username = username;
         this.verified = false;
         this.created_at = Instant.now().getEpochSecond();
     }
