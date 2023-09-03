@@ -17,7 +17,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
 
     private final UserRepository repository;
-    
+
     @Autowired
     public SecurityConfig(UserRepository repository) {
         this.repository = repository;
