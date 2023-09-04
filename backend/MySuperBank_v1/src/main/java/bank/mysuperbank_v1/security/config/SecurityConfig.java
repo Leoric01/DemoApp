@@ -29,17 +29,17 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
        return http
                .csrf(AbstractHttpConfigurer::disable)
-               .authorizeHttpRequests(auth -> {
-                   auth.requestMatchers(new AntPathRequestMatcher("/auth/**"))
-                           .permitAll();
-                   auth.anyRequest()
-                           .authenticated();
-               })
-               .sessionManagement(session -> {
-                   session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-               })
-               .authenticationProvider(authenticationProvider)
-               .addFilterAfter(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+//               .authorizeHttpRequests(auth -> {
+//                   auth.requestMatchers(new AntPathRequestMatcher("/auth/**"))
+//                           .permitAll();
+//                   auth.anyRequest()
+//                           .authenticated();
+//               })
+//               .sessionManagement(session -> {
+//                   session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//               })
+//               .authenticationProvider(authenticationProvider)
+//               .addFilterAfter(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                .build();
     }
 }
