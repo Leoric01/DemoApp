@@ -3,6 +3,7 @@ package bank.mysuperbank_v1.services;
 import bank.mysuperbank_v1.models.DTOs.UserRequestDto;
 import bank.mysuperbank_v1.models.DTOs.UserResponseDto;
 import bank.mysuperbank_v1.models.ErrorResponse;
+import bank.mysuperbank_v1.models.Role;
 import bank.mysuperbank_v1.models.User;
 import bank.mysuperbank_v1.repositories.RoleRepository;
 import bank.mysuperbank_v1.repositories.UserRepository;
@@ -140,7 +141,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return ResponseEntity.status(409).body(new ErrorResponse("Email already exists"));
         }
         User user = new User(userRequestDto.getUsername(), userRequestDto.getFirstname(), userRequestDto.getLastname(), userRequestDto.getEmail(), passwordEncoder.encode(userRequestDto.getPassword()));
-        user.setRole(roleRepository.findRoleByName("USER"));
+        user.setRole(new Role("USER"));
         userRepository.save(user);
         UserResponseDto userResponseDTO = new UserResponseDto();
         userResponseDTO.setId(userRepository.findUserByEmail(user.getEmail()).getId());

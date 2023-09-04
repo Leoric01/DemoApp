@@ -9,13 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -27,7 +24,6 @@ public class JwtService {
     @Autowired
     JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     public String generateToken(Authentication auth) {
-        // Generate a JWT token for the given user details
         String username = auth.getName();
         Date currentDate = new Date();
         Date expireDate = new Date(currentDate.getTime() + 1000 * 60 * 60 * 24); // 24 hours

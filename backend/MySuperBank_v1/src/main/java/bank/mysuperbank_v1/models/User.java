@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 @Entity
@@ -27,8 +28,8 @@ public class User implements UserDetails {
     private int verified_at;
     private Long created_at;
     private Long updated_at;
-  
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
     private Role role;
   
@@ -73,12 +74,9 @@ public class User implements UserDetails {
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getName()));
+        return new HashSet<>();
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public Role getRole() {
         return role;
@@ -87,6 +85,12 @@ public class User implements UserDetails {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+
 
     public String getFirstName() {
         return firstName;
