@@ -1,11 +1,10 @@
 import './App.css';
-import Button from './Button';
+import RouteResolver from './RouteResolver';
 
 function App() {
   return (
     <>
-    <h1>TOP TEXT</h1>
-    <Button />
+    <RouteResolver />
     </>
   );
 }

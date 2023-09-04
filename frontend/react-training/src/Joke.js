@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 function Joke() {
-    const [jokeData, setJokeData] = useState(null);
-
+    const [jokeData, setJokeData] = useState("");
+  
     useEffect(() => {
         fetch('http://localhost:8080/joke/api')
             .then((res) => res.json())
@@ -15,7 +15,7 @@ function Joke() {
     }, []);
 
     return (
-        <div>
+        <>
             {jokeData ? (
                 <>
                     <p>{jokeData.setup}</p>
@@ -24,7 +24,7 @@ function Joke() {
             ) : (
                 <p>API unreachable</p>
             )}
-        </div>
+        </>
     );
 }
 
