@@ -72,9 +72,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (!verifyUser(username, password)) {
             return ResponseEntity.status(400).body(new ErrorResponse("Invalid credentials"));
         }
-        return ResponseEntity.status(200).body(new AuthenticationResponse(generateToken(loginDetails.getUsername(), loginDetails.getPassword())));
+        user.setToken(generateToken(loginDetails.getUsername(), loginDetails.getPassword()));
+        userRepository.save(user);
+        return ResponseEntity.status(200).body(new AuthenticationResponse(user.getToken()));
     }
-
 
 
     @Override
@@ -88,6 +89,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return jwtService.generateToken(authentication);
+    }
+
+    @Override
+    public ResponseEntity<?> getUserDto(Long id) {
+        User user = userRepository.findUserById(id);
+        if (user == null) return ResponseEntity.status(404).body(new ErrorResponse("User with this id not found."));
+        UserResponseDto userResponseDto = new UserResponseDto(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getVerified_at());
+        return ResponseEntity.status(200).body(userResponseDto);
     }
 
 
@@ -140,7 +149,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return ResponseEntity.status(409).body(new ErrorResponse("Email already exists"));
         }
         User user = new User(userRequestDto.getUsername(), userRequestDto.getFirstname(), userRequestDto.getLastname(), userRequestDto.getEmail(), passwordEncoder.encode(userRequestDto.getPassword()));
-        user.setRole(roleRepository.findRoleById(1L));
+//        user.setRole(roleRepository.findRoleById(1L));
         userRepository.save(user);
         UserResponseDto userResponseDTO = new UserResponseDto();
         userResponseDTO.setId(userRepository.findUserByEmail(user.getEmail()).getId());
@@ -163,6 +172,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     userResponseDto.setFirstName(user.getFirstName());
                     userResponseDto.setLastName(user.getLastName());
                     userResponseDto.setEmail(user.getEmail());
+                    userResponseDto.setVerified_at(user.getVerified_at());
                     return userResponseDto;
                 })
                 .collect(Collectors.toList());

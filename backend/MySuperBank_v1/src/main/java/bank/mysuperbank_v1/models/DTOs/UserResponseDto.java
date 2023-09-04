@@ -6,13 +6,23 @@ public class UserResponseDto {
     private String firstName;
     private String lastName;
     private String email;
+    private int verified_at;
 
-    public UserResponseDto(Long id, String username, String firstName, String lastName, String email) {
+    public UserResponseDto(Long id, String username, String firstName, String lastName, String email, int verifiedAt) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        verified_at = verifiedAt;
+    }
+
+    public int getVerified_at() {
+        return verified_at;
+    }
+
+    public void setVerified_at(int verified_at) {
+        this.verified_at = verified_at;
     }
 
     public UserResponseDto() {
