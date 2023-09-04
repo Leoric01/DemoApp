@@ -46,7 +46,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -141,7 +140,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return ResponseEntity.status(409).body(new ErrorResponse("Email already exists"));
         }
         User user = new User(userRequestDto.getUsername(), userRequestDto.getFirstname(), userRequestDto.getLastname(), userRequestDto.getEmail(), passwordEncoder.encode(userRequestDto.getPassword()));
-        user.setRole(new Role("USER"));
+        user.setRole(roleRepository.findRoleById(1L));
         userRepository.save(user);
         UserResponseDto userResponseDTO = new UserResponseDto();
         userResponseDTO.setId(userRepository.findUserByEmail(user.getEmail()).getId());

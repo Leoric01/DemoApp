@@ -11,7 +11,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "role", cascade = CascadeType.PERSIST)
     private List<User> users = new ArrayList<>();
 
     public Role() {
