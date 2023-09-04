@@ -4,20 +4,22 @@ function Counter(){
     const [counter, setCounter] = useState(0);
 
     function increase(){
-        
+        setCounter(counter => counter + 1)
     }
 
     function decrease(){
-
+        if (counter > 0){
+            setCounter(counter => counter -1)
+        }
     }
 
 
 
     return(
         <>
-        <button>Buy one</button>
+        <button onClick={increase}>Add to shopping cart</button>
         <span>{counter}</span>
-        <button>Eat one</button>
+        <button onClick={decrease}>Remove from shopping cart</button>
         </>
     )
 }
