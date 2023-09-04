@@ -29,7 +29,7 @@ public class RegistrationController {
         return userService.registerUser(userRequestDto);
     }
     @PostMapping("/login")
-    public ResponseEntity<Object> loginUser(@RequestBody AuthenticationRequest loginDetails){
-        return ResponseEntity.status(200).body(userService.login(loginDetails));
+    public ResponseEntity<?> loginUser(@RequestBody AuthenticationRequest loginDetails){
+        return userService.login(loginDetails);
     }
 }

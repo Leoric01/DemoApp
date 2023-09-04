@@ -4,13 +4,17 @@ import bank.mysuperbank_v1.models.DTOs.UserRequestDto;
 import bank.mysuperbank_v1.models.DTOs.UserResponseDto;
 import bank.mysuperbank_v1.models.ErrorResponse;
 import bank.mysuperbank_v1.models.User;
+import bank.mysuperbank_v1.repositories.RoleRepository;
 import bank.mysuperbank_v1.repositories.UserRepository;
 import bank.mysuperbank_v1.security.authentication.AuthenticationRequest;
 import bank.mysuperbank_v1.security.authentication.AuthenticationResponse;
 import bank.mysuperbank_v1.security.config.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,15 +29,19 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
-
+    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(RoleRepository roleRepository, UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+        this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
 
 
@@ -44,28 +52,27 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public AuthenticationResponse login (AuthenticationRequest loginDetails){
+    public ResponseEntity<?> login(AuthenticationRequest loginDetails){
         String username = loginDetails.getUsername();
         String password = loginDetails.getPassword();
 
         if (username == null || username.isBlank()) {
-            throw new IllegalArgumentException("Username is required.");
+            return ResponseEntity.status(400).body(new ErrorResponse("Username is required"));
         }
         if (username.length() < 4) {
-            throw new IllegalArgumentException("Invalid username.");
+            return ResponseEntity.status(400).body(new ErrorResponse("Invalid username"));
         }
         if (password == null || password.isBlank()) {
-            throw new IllegalArgumentException("Password is required.");
+            return ResponseEntity.status(400).body(new ErrorResponse("Password is required"));
         }
         if (!userRepository.existsByUsername(username)) {
-            throw new BadCredentialsException("Unregistered username!");
+            return ResponseEntity.status(400).body(new ErrorResponse("Unregistered name"));
         }
         User user = userRepository.findUserByUsername(username);
         if (!verifyUser(username, password)) {
-            throw new BadCredentialsException("Password is not matching for this username!");
+            return ResponseEntity.status(400).body(new ErrorResponse("Invalid credentials"));
         }
-        AuthenticationResponse auth = new AuthenticationResponse(generateToken(user));
-        return auth;
+        return ResponseEntity.status(200).body(new AuthenticationResponse(generateToken(loginDetails.getUsername(), loginDetails.getPassword())));
     }
 
 
@@ -77,8 +84,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public String generateToken(UserDetails userDetails) {
-        return jwtService.generateToken(userDetails);
+    public String generateToken(String username, String password) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return jwtService.generateToken(authentication);
     }
 
 
@@ -131,6 +140,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return ResponseEntity.status(409).body(new ErrorResponse("Email already exists"));
         }
         User user = new User(userRequestDto.getUsername(), userRequestDto.getFirstname(), userRequestDto.getLastname(), userRequestDto.getEmail(), passwordEncoder.encode(userRequestDto.getPassword()));
+        user.setRole(roleRepository.findRoleByName("USER"));
         userRepository.save(user);
         UserResponseDto userResponseDTO = new UserResponseDto();
         userResponseDTO.setId(userRepository.findUserByEmail(user.getEmail()).getId());

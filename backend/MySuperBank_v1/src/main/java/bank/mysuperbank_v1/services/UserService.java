@@ -21,7 +21,7 @@ public interface UserService {
     boolean verifySameName(String username);
     boolean verifySameEmail(String email);
 
-    AuthenticationResponse login(AuthenticationRequest loginDetails);
+    ResponseEntity<?> login(AuthenticationRequest loginDetails);
     boolean verifyUser(String username, String password);
-    String generateToken(UserDetails userDetails);
+    String generateToken(String username, String password);
 }

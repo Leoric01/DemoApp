@@ -33,18 +33,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
        return http
-               .csrf(AbstractHttpConfigurer::disable)
-               .authorizeHttpRequests(auth -> {
-                   auth.requestMatchers(new AntPathRequestMatcher("/auth/**"))
-                           .permitAll();
-                   auth.anyRequest()
-                           .authenticated();
-               })
-               .sessionManagement(session -> {
-                   session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-               })
-               .authenticationProvider(authenticationProvider)
-               .addFilterAfter(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+               .csrf(csrf -> csrf.disable())
+//               .authorizeHttpRequests(auth -> {
+//                   auth.requestMatchers(new AntPathRequestMatcher("/auth/**"))
+//                           .permitAll();
+//                   auth.anyRequest()
+//                           .authenticated();
+//               })
+//               .sessionManagement(session -> {
+//                   session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//               })
+//               .authenticationProvider(authenticationProvider)
+//               .addFilterAfter(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                .build();
     }
 }
