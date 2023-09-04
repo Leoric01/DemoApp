@@ -18,8 +18,8 @@ public class Payment {
     private String  reasonCode;
     private Long  createdAt;
 
-    //not rly sure about this one, maybe i dont wanna keep payment objects stored, just
-    //the records of those in history. we'll see
+    //not rly sure about this one, maybe I shouldn't keep payment objects stored, just
+    //the records of those in history. But this would be easier to repeat payments. We'll see
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account;

@@ -1,13 +1,18 @@
 package bank.mysuperbank_v1.models;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 @Entity
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,8 +28,8 @@ public class User {
     private int verified_at;
     private Long created_at;
     private Long updated_at;
-  
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
     private Role role;
   
@@ -34,11 +39,12 @@ public class User {
     @OneToMany
     private List<Account> accounts = new ArrayList<>();
 
-    public User(String firstName, String lastName, String email, String password) {
+    public User(String username, String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.username = username;
         this.verified = false;
         this.created_at = Instant.now().getEpochSecond();
     }
@@ -47,9 +53,30 @@ public class User {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return new HashSet<>();
+    }
+
 
     public Role getRole() {
         return role;
@@ -58,6 +85,12 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+
 
     public String getFirstName() {
         return firstName;
@@ -83,6 +116,7 @@ public class User {
         this.email = email;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
