@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 function Joke() {
     const [jokeData, setJokeData] = useState("");
-
+  
     useEffect(() => {
         fetch('http://localhost:8080/joke/api')
             .then((res) => res.json())
