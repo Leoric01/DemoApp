@@ -141,6 +141,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         User user = new User(userRequestDto.getUsername(), userRequestDto.getFirstname(), userRequestDto.getLastname(), userRequestDto.getEmail(), passwordEncoder.encode(userRequestDto.getPassword()));
         user.setRole(roleRepository.findRoleById(1L));
+        
         userRepository.save(user);
         UserResponseDto userResponseDTO = new UserResponseDto();
         userResponseDTO.setId(userRepository.findUserByEmail(user.getEmail()).getId());
