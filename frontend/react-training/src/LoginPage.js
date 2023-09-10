@@ -35,17 +35,18 @@ function LoginPage({ setToken, setError }) {
             </h1>
             <form className="login-form" onSubmit={handleLogin}>
               <input
+                class="form-control form-control-lg"
                 type="text"
                 placeholder="Username"
                 onChange={(e) => setUserName(e.target.value)}
               />
               <input
+                class="form-control form-control-lg"
                 type="password"
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
-                f
               />
-              <div className="form-group col">
+              <div className="">
                 <button className="btn btn-lg" type="submit">
                   Login
                 </button>
