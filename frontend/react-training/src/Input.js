@@ -6,7 +6,7 @@ const { type, name, placeholder } = props
 
   return (
     <div class="form-group col">
-    <input type={type} name={name} class="form-control form-control-lg" placeholder={placeholder} minlength="6" />
+      <input type={type} name={name} className="form-control form-control-lg" placeholder={placeholder} minLength="3" />
     </div>
   )
 }

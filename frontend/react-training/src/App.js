@@ -1,10 +1,10 @@
-import './App.css';
-import RouteResolver from './RouteResolver';
+import "./App.css";
+import RouteResolver from "./RouteResolver";
 
 function App() {
   return (
     <>
-    <RouteResolver />
+      <RouteResolver />
     </>
   );
 }

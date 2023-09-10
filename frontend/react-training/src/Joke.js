@@ -1,31 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+import useToken from "./useToken";
 
 function Joke() {
-    const [jokeData, setJokeData] = useState({});
-  
-    useEffect(() => {
-        fetch('http://localhost:8080/joke/api')
-            .then((res) => res.json())
-            .then((data) => {
-                setJokeData(data);
-            })
-            .catch((error) => {
-                console.error('Error fetching joke:', error);
-            });
-    }, []);
+  const [jokeData, setJokeData] = useState({});
+  const { token } = useToken();
 
-    return (
+  useEffect(() => {
+    axios("http://localhost:8080/joke/api")
+      .then((data) => {
+        setJokeData(data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching joke:", error);
+      });
+  }, []);
+
+  return (
+    <>
+      {jokeData ? (
         <>
-            {jokeData ? (
-                <>
-                    <p>{jokeData.setup}</p>
-                    <p>{jokeData.punchline}</p>
-                </>
-            ) : (
-                <p>API unreachable</p>
-            )}
+          <p>{jokeData.setup}</p>
+          <p>{jokeData.punchline}</p>
         </>
-    );
+      ) : (
+        <p>API unreachable</p>
+      )}
+    </>
+  );
 }
 
 export default Joke;
