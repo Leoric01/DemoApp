@@ -1,4 +1,5 @@
 import React from "react";
+import Input from "./Input";
 
 function RegisterPage(){
     return(
@@ -25,6 +26,7 @@ function RegisterPage(){
                     <input type="email" name="email" class="form-control form-control-lg" placeholder="Email" />
                 </div>
                 <div class="row">
+                    <Input type={'password'} name={'password'} placeholder={'Password'} />
                     <div class="form-group col">
                         <input type="password" name="password" class="form-control form-control-lg" placeholder="Password" minlength="6" />
                     </div>
