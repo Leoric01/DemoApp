@@ -36,7 +36,7 @@ public class SecurityConfig {
                    auth.anyRequest()
                            .authenticated();
                })
-               .oauth2ResourceServer(oAuth2 -> oAuth2.jwt(Customizer.withDefaults()))
+//               .oauth2ResourceServer(oAuth2 -> oAuth2.jwt(Customizer.withDefaults()))
                .sessionManagement(session -> {
                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                })

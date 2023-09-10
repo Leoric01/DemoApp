@@ -10,6 +10,8 @@ import bank.mysuperbank_v1.repositories.UserRepository;
 import bank.mysuperbank_v1.security.authentication.AuthenticationRequest;
 import bank.mysuperbank_v1.security.authentication.AuthenticationResponse;
 import bank.mysuperbank_v1.security.config.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,6 +46,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
     }
+
 
 
     @Override
@@ -95,6 +98,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public ResponseEntity<?> getUserDto(Long id) {
         User user = userRepository.findUserById(id);
         if (user == null) return ResponseEntity.status(404).body(new ErrorResponse("User with this id not found."));
+        UserResponseDto userResponseDto = new UserResponseDto(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getVerified_at());
+        return ResponseEntity.status(200).body(userResponseDto);
+    }
+
+    @Override
+    public ResponseEntity<?> extractFromToken(@NotNull HttpServletRequest request) {
+        final String authHeader = request.getHeader("Authorization");
+        final String jwt;
+        if (authHeader == null || !authHeader.startsWith("Bearer ")){
+            return ResponseEntity.status(400).body(new ErrorResponse("Bearer token error"));
+        }
+        jwt = authHeader.substring(7);
+        User user = userRepository.findUserByUsername(jwtService.extractUsername(jwt));
+        if (user == null) return ResponseEntity.status(400).body(new ErrorResponse("user not found from jwt"));
         UserResponseDto userResponseDto = new UserResponseDto(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getVerified_at());
         return ResponseEntity.status(200).body(userResponseDto);
     }
