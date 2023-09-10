@@ -71,13 +71,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (!userRepository.existsByUsername(username)) {
             return ResponseEntity.status(400).body(new ErrorResponse("Unregistered name"));
         }
-        User user = userRepository.findUserByUsername(username);
         if (!verifyUser(username, password)) {
             return ResponseEntity.status(400).body(new ErrorResponse("Invalid credentials"));
         }
-        user.setToken(generateToken(loginDetails.getUsername(), loginDetails.getPassword()));
-        userRepository.save(user);
-        return ResponseEntity.status(200).body(new AuthenticationResponse(user.getToken()));
+        return ResponseEntity.status(200).body(new AuthenticationResponse(generateToken(loginDetails.getUsername(), loginDetails.getPassword())));
     }
 
 
