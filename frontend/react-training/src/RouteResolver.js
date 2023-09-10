@@ -3,7 +3,7 @@ import Counter from "./Counter";
 import Joke from "./Joke";
 import LandingPage from "./LandingPage";
 import ErrorPage from "./ErrorPage";
-import LoginPage from "./LoginPage";
+import LoginPage from "./LoginPage/LoginPage";
 import RegisterPage from "./RegisterPage";
 import { useState } from "react";
 import Dashboard from "./Dashboard";
