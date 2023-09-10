@@ -1,4 +1,3 @@
-import "./App.css";
 import RouteResolver from "./RouteResolver";
 
 function App() {

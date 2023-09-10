@@ -5,6 +5,7 @@
 
 body{
     background-color: rgb(211,217,226);
+    /* background-image: none; */
 }
 
 .main-page-header{
@@ -61,7 +62,7 @@ body{
 }
 
 .offcanvas{
-    /* background-image: url(../assets/sidebar2.avif); */
+    background-image: url(./sidebar2.avif);
     background-size: cover;
     background-position: center center;
     background-repeat: repeat;

@@ -6,7 +6,7 @@ import ErrorPage from "./ErrorPage";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import { useState } from "react";
-
+import Dashboard from "./Dashboard";
 import useToken from "./useToken";
 
 function RouteResolver() {
@@ -27,6 +27,7 @@ function RouteResolver() {
           <Route path="/counter" element={<Counter />} />
           <Route path="/joke" element={<Joke />} />
           <Route path="/" element={<LandingPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/error" element={<ErrorPage error={error} />} />
           <Route
             path="/login"

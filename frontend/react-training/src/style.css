@@ -11,7 +11,7 @@ body{
 }
 
 #sample-text-card{
-    margin: 0px 100px;
+    margin: 10% 100px;
     font-family: sans-serif;
     color: white;
 }
@@ -48,6 +48,8 @@ body{
 
 .card{
     font-family: sans-serif;
+    margin: 10% auto;
+
 }
 
 .card .form-control{
@@ -83,7 +85,7 @@ body{
 
 #login-card-form{
     width: 100vw;
-    margin: auto;
+    margin: 10% auto;
     max-width: 900px;
     min-width: 400px;
 }

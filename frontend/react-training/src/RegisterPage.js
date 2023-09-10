@@ -1,5 +1,7 @@
 import React from "react";
 import Input from "./Input";
+import './style.css';
+
 
 function RegisterPage(){
     return(

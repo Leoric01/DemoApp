@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import './style.css';
 
 function LoginPage({ setToken, setError }) {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ function LoginPage({ setToken, setError }) {
       })
       .then((e) => {
         setToken(e.data.token);
-        navigate("/joke");
+        navigate("/dashboard");
       })
       .catch((e) => {
         setError(e);
