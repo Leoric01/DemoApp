@@ -1,10 +1,10 @@
 import React from "react";
-//import './styles/style.css';
+import './styles/style1.css';
 
 
 function ErrorPage({ error }) {
   return (
-    <>
+    <div className="errorPage">
       <div className="d-flex align-items-center justify-content-center">
         <div
           id="errorcard"
@@ -27,7 +27,7 @@ function ErrorPage({ error }) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 export default ErrorPage;

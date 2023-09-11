@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return ResponseEntity.status(400).body(new ErrorResponse("Unregistered name"));
         }
         if (!verifyUser(username, password)) {
-            return ResponseEntity.status(400).body(new ErrorResponse("Invalid credentials"));
+            return ResponseEntity.status(400).body(new ErrorResponse("Invalid password")); //this error is just for me -> change in production
         }
         return ResponseEntity.status(200).body(new AuthenticationResponse(generateToken(loginDetails.getUsername(), loginDetails.getPassword())));
     }
