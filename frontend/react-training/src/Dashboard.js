@@ -65,7 +65,7 @@ function Dashboard() {
       </header>
 
       <div className="container d-flex">
-        <div class="offcanvas offcanvas-start" tabindex="-1" id="offCanvasExample" aria-labelledby="offCanvasExampleLabel">
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offCanvasExample" aria-labeledby="offCanvasExampleLabel">
           <div class="offcanvas-header">
             <h5 class="offcanvas-title text-white" id="offCanvasExampleLabel">Transact</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
