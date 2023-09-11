@@ -8,16 +8,20 @@ import RegisterPage from "./RegisterPage";
 import { useState } from "react";
 import Dashboard from "./Dashboard";
 import useToken from "./useToken";
+import axios from "axios";
 
 function RouteResolver() {
   const { token, setToken } = useToken();
   const [error, setError] = useState();
   if (
-    !token &&
-    sessionStorage.getItem("token") &&
-    sessionStorage.getItem("token") !== "null"
+    token
   ) {
-    setToken(sessionStorage.getItem("token"));
+    axios.interceptors.request.use(function (config) {
+      const tkn = `Bearer ${token}`;
+      config.headers.Authorization = tkn;
+
+      return config;
+    });
   }
 
   return (

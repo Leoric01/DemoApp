@@ -5,7 +5,7 @@ import './styles/style2.css';
 import useToken from "./useToken";
 
 function Dashboard() {
-  const { token } = useToken();
+  const { token, setToken } = useToken();
   const [transactType, setTransactType] = useState("");
 
   const handleTransactTypeChange = (e) => {
@@ -58,7 +58,7 @@ function Dashboard() {
           <div class="display-name ms-auto text-white">
             <i class="fa fa-circle text-success me-2"></i>Welcome: <span>{token}</span>
           </div>
-          <a href="/" class="btn btn-sm text-white">
+          <a href="/" class="btn btn-sm text-white" onClick={() => setToken(undefined)}>
             <i class="fa fa-sign-out ms-2 me-1"></i> Sign out
           </a>
         </div>
