@@ -6,38 +6,36 @@ import './styles/style1.css';
 
 function RegisterPage({ setError }) {
     const navigate = useNavigate();
-    const [username, setUserName] = useState();
-    const [firstname, setFirstName] = useState();
-    const [lastname, setLastName] = useState();
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+    const [username, setUserName] = useState("");
+    const [firstname, setFirstName] = useState("");
+    const [lastname, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [confirmpassword, setConfirmPassword] = useState("");
 
     function handleRegister(e) {
         e.preventDefault();
+        const formData = {
+            username,
+            firstname,
+            lastname,
+            email,
+            password,
+            matchingPassword:confirmpassword,
+        };
         axios
-            .post("http://localhost:8080/auth/register", {
-                username,
-                firstname,
-                lastname,
-                email,
-                password,
-                confirmpassword
-            })
+            .post("http://localhost:8080/auth/register", formData)
             .then((e) => {
-                navigate("/");
-                console.log(e.data.username);
-                console.log(e.data.firstname);
-                console.log(e.data.lastname);
-                console.log(e.data.email);
-
+                navigate("/login");
+                console.log(username);
             })
             .catch((e) => {
-                // setError(e);
+                setError(e);
                 console.error("Registration failed:", e);
                 navigate("/error");
             });
     }
+    
 
     return (
         <div className="registerPage">
@@ -49,15 +47,15 @@ function RegisterPage({ setError }) {
                         </h1>
                         <form className="reg-form" onSubmit={handleRegister}>
                             <Input
-                                type={'text'}
-                                name={'username'}
+                                type='text'
+                                name='username'
                                 placeholder={'Username / Nickname'}
                                 onChange={(e) => setUserName(e.target.value)}
                             />
                             <div className="row">
                                 <Input
-                                    type={'text'}
-                                    name={'firstname'}
+                                    type='text'
+                                    name='firstname'
                                     placeholder={'First Name'}
                                     onChange={(e) => setFirstName(e.target.value)}
                                 />

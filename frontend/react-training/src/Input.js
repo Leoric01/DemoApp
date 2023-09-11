@@ -1,12 +1,12 @@
 import React from 'react'
 
 function Input(props) {
-const { type, name, placeholder } = props
+  const { type, name, placeholder, onChange } = props
 
 
   return (
-    <div class="form-group col">
-      <input type={type} name={name} className="form-control form-control-lg" placeholder={placeholder} minLength="3" />
+    <div className="form-group col">
+      <input type={type} name={name} onChange={onChange} className="form-control form-control-lg" placeholder={placeholder} minLength="3" />
     </div>
   )
 }

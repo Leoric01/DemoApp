@@ -33,7 +33,7 @@ function RouteResolver() {
             path="/login"
             element={<LoginPage setToken={setToken} setError={setError} />}
           />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/register" element={<RegisterPage setError={setError} />} />
         </Routes>
       </BrowserRouter>
     </>

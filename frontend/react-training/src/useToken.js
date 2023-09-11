@@ -4,7 +4,7 @@ import axios from "axios";
 export default function useToken() {
   const getToken = () => {
     const userToken = sessionStorage.getItem("token");
-    return userToken?.token;
+    return userToken;
   };
 
   const [token, setToken] = useState(getToken());
