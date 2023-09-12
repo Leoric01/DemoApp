@@ -3,6 +3,7 @@ package bank.mysuperbank_v1.services;
 import bank.mysuperbank_v1.models.DTOs.UserRequestDto;
 import bank.mysuperbank_v1.models.DTOs.UserResponseDto;
 import bank.mysuperbank_v1.security.authentication.AuthenticationRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -24,4 +25,6 @@ public interface UserService {
     String generateToken(String username, String password);
 
     ResponseEntity<?> getUserDto(Long id);
+
+    ResponseEntity<?> extractFromToken(HttpServletRequest request);
 }
