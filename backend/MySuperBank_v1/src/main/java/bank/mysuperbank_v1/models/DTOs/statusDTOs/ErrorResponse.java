@@ -1,4 +1,4 @@
-package bank.mysuperbank_v1.models;
+package bank.mysuperbank_v1.models.DTOs.statusDTOs;
 
 import java.util.Objects;
 

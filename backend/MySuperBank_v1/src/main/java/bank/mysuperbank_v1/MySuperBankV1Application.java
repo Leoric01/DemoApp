@@ -23,9 +23,7 @@ public class MySuperBankV1Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        Role role = new Role("USER");
 //        Role role1 = new Role("ADMIN");
-//        roleRepository.save(role);
 //        roleRepository.save(role1);
     }
 }
