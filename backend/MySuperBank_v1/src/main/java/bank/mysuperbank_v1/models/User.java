@@ -29,7 +29,7 @@ public class User implements UserDetails {
     private Long created_at;
     private Long updated_at;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "role_id")
     private Role role;
   
