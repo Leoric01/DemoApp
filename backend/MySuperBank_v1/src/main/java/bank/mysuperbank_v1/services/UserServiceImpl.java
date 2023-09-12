@@ -47,8 +47,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.authenticationManager = authenticationManager;
     }
 
-
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -109,7 +107,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         jwt = authHeader.substring(7);
         User user = userRepository.findUserByUsername(jwtService.extractUsername(jwt));
         if (user == null) return ResponseEntity.status(400).body(new ErrorResponse("user not found from jwt"));
-        UserResponseDto userResponseDto = new UserResponseDto(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getVerified_at());
+        UserResponseDto userResponseDto;
+        if (user.getRole() != null){
+            userResponseDto = new UserResponseDto(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(),user.getRole().getName(), user.getVerified_at());
+        }else{
+            userResponseDto = new UserResponseDto(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(),null, user.getVerified_at());
+        }
         return ResponseEntity.status(200).body(userResponseDto);
     }
 
