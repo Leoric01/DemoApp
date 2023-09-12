@@ -36,6 +36,7 @@ public class User implements UserDetails {
     public User() {
     }
 
+
     @OneToMany
     private List<Account> accounts = new ArrayList<>();
 
