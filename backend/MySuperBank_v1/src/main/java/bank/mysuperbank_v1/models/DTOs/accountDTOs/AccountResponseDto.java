@@ -1,19 +1,9 @@
-package bank.mysuperbank_v1.models;
-
-import jakarta.persistence.*;
+package bank.mysuperbank_v1.models.DTOs.accountDTOs;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Entity
-public class Account {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AccountResponseDto {
     private Long id;
-
     private String accountNumber;
     private String accountName;
     private String accountType;
@@ -21,27 +11,25 @@ public class Account {
     private Long created_at;
     private Long updated_at;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    public AccountResponseDto() {
+    }
 
-    @OneToMany
-    private List<TransactionHistory> transactionHistories = new ArrayList<>();
-
-    //not rly sure about this one, maybe i don't wanna keep payment objects stored, just
-    //the records of those in history. we'll see
-    @OneToMany
-    private List<Payment> payments = new ArrayList<>();
-
-    public Account(String accountNumber, String accountName, String accountType) {
+    public AccountResponseDto(Long id, String accountNumber, String accountName, String accountType, BigDecimal balance, Long created_at, Long updated_at) {
+        this.id = id;
         this.accountNumber = accountNumber;
         this.accountName = accountName;
         this.accountType = accountType;
-        this.balance = BigDecimal.valueOf(0);
-        this.created_at = Instant.now().getEpochSecond();
+        this.balance = balance;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 
-    public Account() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getAccountNumber() {
@@ -74,22 +62,6 @@ public class Account {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public Long getCreated_at() {

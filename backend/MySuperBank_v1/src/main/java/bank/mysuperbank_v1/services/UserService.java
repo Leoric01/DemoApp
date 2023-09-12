@@ -30,4 +30,6 @@ public interface UserService {
     ResponseEntity<?> extractFromToken(HttpServletRequest request);
 
     ResponseEntity<?> changeUserData(Long id, HttpServletRequest request, UserPutRequestDto requestDto);
+
+    ResponseEntity<?> deleteUserById(Long id, HttpServletRequest request);
 }

@@ -4,6 +4,7 @@ import bank.mysuperbank_v1.models.DTOs.UserPutRequestDto;
 import bank.mysuperbank_v1.models.DTOs.UserRequestDto;
 import bank.mysuperbank_v1.models.DTOs.UserResponseDto;
 import bank.mysuperbank_v1.models.DTOs.statusDTOs.ErrorResponse;
+import bank.mysuperbank_v1.models.DTOs.statusDTOs.SuccessResponse;
 import bank.mysuperbank_v1.models.Role;
 import bank.mysuperbank_v1.models.User;
 import bank.mysuperbank_v1.repositories.RoleRepository;
@@ -167,6 +168,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(userToChange);
         UserResponseDto responseDto = new UserResponseDto(userToChange.getId(), userToChange.getUsername(), userLogged.getFirstName(), userToChange.getLastName(), userToChange.getEmail(), userToChange.getRole().getName(), userToChange.getVerified_at());
         return ResponseEntity.status(201).body(responseDto);
+    }
+
+    @Override
+    public ResponseEntity<?> deleteUserById(Long id, HttpServletRequest request) {
+        final String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(400).body(new ErrorResponse("Bearer token error"));
+        }
+        final String jwt = authHeader.substring(7);
+        User userLogged = userRepository.findUserByUsername(jwtService.extractUsername(jwt));
+        User userToDelete = userRepository.findUserById(id);
+
+        if (!userToDelete.getUsername().equals(userLogged.getUsername()) && !userLogged.getRole().getName().equals("ADMIN")) {
+            return ResponseEntity.status(403).body(new ErrorResponse("Can't delete anyone else but yourself"));
+        }
+
+        userRepository.deleteById(id);
+        return ResponseEntity.status(202).body(new SuccessResponse("User deleted successfully"));
     }
 
 

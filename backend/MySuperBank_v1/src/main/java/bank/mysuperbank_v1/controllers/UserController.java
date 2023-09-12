@@ -45,4 +45,10 @@ public class UserController {
         return userService.changeUserData(id,request,requestDto);
     }
 
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<?> deleteUserById(@PathVariable Long id,
+                                            @NotNull HttpServletRequest request){
+        return userService.deleteUserById(id, request);
+    }
+
 }
