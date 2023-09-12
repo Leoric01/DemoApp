@@ -100,5 +100,4 @@ function RegisterPage({ setError }) {
         </div>
     );
 }
-
 export default RegisterPage;

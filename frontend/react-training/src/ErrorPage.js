@@ -1,7 +1,6 @@
 import React from "react";
 import './styles/style1.css';
 
-
 function ErrorPage({ error }) {
   return (
     <div className="errorPage">
