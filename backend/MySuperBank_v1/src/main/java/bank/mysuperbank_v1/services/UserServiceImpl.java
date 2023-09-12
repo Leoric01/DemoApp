@@ -10,6 +10,8 @@ import bank.mysuperbank_v1.repositories.UserRepository;
 import bank.mysuperbank_v1.security.authentication.AuthenticationRequest;
 import bank.mysuperbank_v1.security.authentication.AuthenticationResponse;
 import bank.mysuperbank_v1.security.config.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -45,7 +47,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.authenticationManager = authenticationManager;
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -68,13 +69,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (!userRepository.existsByUsername(username)) {
             return ResponseEntity.status(400).body(new ErrorResponse("Unregistered name"));
         }
-        User user = userRepository.findUserByUsername(username);
         if (!verifyUser(username, password)) {
-            return ResponseEntity.status(400).body(new ErrorResponse("Invalid credentials"));
+            return ResponseEntity.status(400).body(new ErrorResponse("Invalid password")); //this error is just for me -> change in production
         }
         return ResponseEntity.status(200).body(new AuthenticationResponse(generateToken(loginDetails.getUsername(), loginDetails.getPassword())));
     }
-
 
 
     @Override
@@ -88,6 +87,33 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return jwtService.generateToken(authentication);
+    }
+
+    @Override
+    public ResponseEntity<?> getUserDto(Long id) {
+        User user = userRepository.findUserById(id);
+        if (user == null) return ResponseEntity.status(404).body(new ErrorResponse("User with this id not found."));
+        UserResponseDto userResponseDto = new UserResponseDto(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getVerified_at());
+        return ResponseEntity.status(200).body(userResponseDto);
+    }
+
+    @Override
+    public ResponseEntity<?> extractFromToken(@NotNull HttpServletRequest request) {
+        final String authHeader = request.getHeader("Authorization");
+        final String jwt;
+        if (authHeader == null || !authHeader.startsWith("Bearer ")){
+            return ResponseEntity.status(400).body(new ErrorResponse("Bearer token error"));
+        }
+        jwt = authHeader.substring(7);
+        User user = userRepository.findUserByUsername(jwtService.extractUsername(jwt));
+        if (user == null) return ResponseEntity.status(400).body(new ErrorResponse("user not found from jwt"));
+        UserResponseDto userResponseDto;
+        if (user.getRole() != null){
+            userResponseDto = new UserResponseDto(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(),user.getRole().getName(), user.getVerified_at());
+        }else{
+            userResponseDto = new UserResponseDto(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(),null, user.getVerified_at());
+        }
+        return ResponseEntity.status(200).body(userResponseDto);
     }
 
 
@@ -141,7 +167,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         User user = new User(userRequestDto.getUsername(), userRequestDto.getFirstname(), userRequestDto.getLastname(), userRequestDto.getEmail(), passwordEncoder.encode(userRequestDto.getPassword()));
         user.setRole(roleRepository.findRoleById(1L));
-        
         userRepository.save(user);
         UserResponseDto userResponseDTO = new UserResponseDto();
         userResponseDTO.setId(userRepository.findUserByEmail(user.getEmail()).getId());
@@ -164,6 +189,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     userResponseDto.setFirstName(user.getFirstName());
                     userResponseDto.setLastName(user.getLastName());
                     userResponseDto.setEmail(user.getEmail());
+                    userResponseDto.setVerified_at(user.getVerified_at());
                     return userResponseDto;
                 })
                 .collect(Collectors.toList());

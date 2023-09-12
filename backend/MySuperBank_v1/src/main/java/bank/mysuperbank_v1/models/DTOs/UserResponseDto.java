@@ -7,12 +7,42 @@ public class UserResponseDto {
     private String lastName;
     private String email;
 
-    public UserResponseDto(Long id, String username, String firstName, String lastName, String email) {
+    private String role;
+    private int verified_at;
+
+    public UserResponseDto(Long id, String username, String firstName, String lastName, String email, int verifiedAt) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        verified_at = verifiedAt;
+    }
+
+    public UserResponseDto(Long id, String username, String firstName, String lastName, String email, String role, int verified_at) {
+        this.id = id;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
+        this.verified_at = verified_at;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public int getVerified_at() {
+        return verified_at;
+    }
+
+    public void setVerified_at(int verified_at) {
+        this.verified_at = verified_at;
     }
 
     public UserResponseDto() {
