@@ -1,6 +1,7 @@
 package bank.mysuperbank_v1.controllers;
 
 import bank.mysuperbank_v1.models.Account;
+import bank.mysuperbank_v1.models.DTOs.accountDTOs.AccountRequestDto;
 import bank.mysuperbank_v1.models.DTOs.accountDTOs.AccountResponseDto;
 import bank.mysuperbank_v1.services.AccountService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import java.util.List;
 
@@ -29,4 +31,9 @@ public class AccountController {
         return accountService.getAllAccounts(request);
     }
 
+
+    @PostMapping("/account")
+    public ResponseEntity<?> addNewAccount(@NotNull HttpServletRequest request, @RequestBody AccountRequestDto requestDto){
+        return accountService.addNewAccount(request, requestDto);
+    }
 }
