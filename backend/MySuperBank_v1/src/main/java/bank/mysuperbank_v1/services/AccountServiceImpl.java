@@ -11,6 +11,8 @@ import bank.mysuperbank_v1.repositories.AccountRepository;
 import bank.mysuperbank_v1.repositories.UserRepository;
 import bank.mysuperbank_v1.security.config.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
+import org.hibernate.Hibernate;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -95,6 +97,7 @@ public class AccountServiceImpl implements AccountService {
         return ResponseEntity.status(200).body(responseDto);
     }
 
+    @Transactional
     @Override
     public ResponseEntity<?> changeName(HttpServletRequest request, AccountNameRequestDto requestDto) {
         final String authHeader = request.getHeader("Authorization");
@@ -116,8 +119,9 @@ public class AccountServiceImpl implements AccountService {
         if (!userRepository.existsById(requestDto.getId())){
             return ResponseEntity.status(404).body(new ErrorResponse("User with id " + requestDto.getId() + " doesn't exist"));
         }
+        List<Account> accounts = user.getAccounts();
         if (user.getId() == requestDto.getId()) {
-            for (Account account : user.getAccounts()) {
+            for (Account account : accounts) {
                 if (account.getAccountName().equals(requestDto.getCurrentName())) {
                     acc = account;
                     acc.setAccountName(requestDto.getNewName());

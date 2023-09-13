@@ -31,18 +31,18 @@ public class SecurityConfig {
        return http
                .cors(Customizer.withDefaults())
                .csrf(csrf -> csrf.disable())
-//               .authorizeHttpRequests(auth -> {
-//                   auth.requestMatchers(new AntPathRequestMatcher("/auth/**"))
-//                           .permitAll();
-//                   auth.anyRequest()
-//                           .authenticated();
-//               })
-////               .oauth2ResourceServer(oAuth2 -> oAuth2.jwt(Customizer.withDefaults()))
-//               .sessionManagement(session -> {
-//                   session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//               })
-//               .authenticationProvider(authenticationProvider)
-//               .addFilterAfter(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+               .authorizeHttpRequests(auth -> {
+                   auth.requestMatchers(new AntPathRequestMatcher("/auth/**"))
+                           .permitAll();
+                   auth.anyRequest()
+                           .authenticated();
+               })
+//               .oauth2ResourceServer(oAuth2 -> oAuth2.jwt(Customizer.withDefaults()))
+               .sessionManagement(session -> {
+                   session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+               })
+               .authenticationProvider(authenticationProvider)
+               .addFilterAfter(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                .build();
     }
 }
