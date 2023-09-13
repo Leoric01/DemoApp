@@ -1,5 +1,7 @@
 package bank.mysuperbank_v1.controllers;
 
+import bank.mysuperbank_v1.models.DTOs.UserPutRequestDto;
+import bank.mysuperbank_v1.models.DTOs.UserRequestDto;
 import bank.mysuperbank_v1.models.DTOs.UserResponseDto;
 import bank.mysuperbank_v1.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,6 +36,19 @@ public class UserController {
     @GetMapping("/users/{id}")
     public ResponseEntity<?> showUser(@PathVariable Long id){
         return userService.getUserDto(id);
+    }
+
+    @PutMapping("/user/{id}")
+    public ResponseEntity<?> changeUserData(@PathVariable Long id,
+                                            @NotNull HttpServletRequest request,
+                                            @RequestBody UserPutRequestDto requestDto){
+        return userService.changeUserData(id,request,requestDto);
+    }
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<?> deleteUserById(@PathVariable Long id,
+                                            @NotNull HttpServletRequest request){
+        return userService.deleteUserById(id, request);
     }
 
 }

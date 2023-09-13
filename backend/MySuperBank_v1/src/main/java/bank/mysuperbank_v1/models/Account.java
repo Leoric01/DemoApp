@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +31,21 @@ public class Account {
     @OneToMany
     private List<TransactionHistory> transactionHistories = new ArrayList<>();
 
-    //not rly sure about this one, maybe i dont wanna keep payment objects stored, just
+    //not rly sure about this one, maybe i don't wanna keep payment objects stored, just
     //the records of those in history. we'll see
     @OneToMany
     private List<Payment> payments = new ArrayList<>();
+
+    public Account(String accountNumber, String accountName, String accountType, BigDecimal balance, User user) {
+        this.accountNumber = accountNumber;
+        this.accountName = accountName;
+        this.accountType = accountType;
+        this.balance = balance;
+        this.user = user;
+        this.created_at = Instant.now().getEpochSecond();
+        this.updated_at = Instant.now().getEpochSecond();
+
+    }
 
     public Account(String accountNumber, String accountName, String accountType) {
         this.accountNumber = accountNumber;
@@ -42,6 +56,19 @@ public class Account {
     }
 
     public Account() {
+        this.created_at = Instant.now().getEpochSecond();
+    }
+
+    public String getFormattedCreatedAt() {
+        LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(created_at), ZoneId.systemDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return dateTime.format(formatter);
+    }
+
+    public String getFormattedUpdatedAt() {
+        LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(updated_at), ZoneId.systemDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return dateTime.format(formatter);
     }
 
     public String getAccountNumber() {

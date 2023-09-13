@@ -1,5 +1,6 @@
 package bank.mysuperbank_v1.services;
 
+import bank.mysuperbank_v1.models.DTOs.UserPutRequestDto;
 import bank.mysuperbank_v1.models.DTOs.UserRequestDto;
 import bank.mysuperbank_v1.models.DTOs.UserResponseDto;
 import bank.mysuperbank_v1.security.authentication.AuthenticationRequest;
@@ -27,4 +28,8 @@ public interface UserService {
     ResponseEntity<?> getUserDto(Long id);
 
     ResponseEntity<?> extractFromToken(HttpServletRequest request);
+
+    ResponseEntity<?> changeUserData(Long id, HttpServletRequest request, UserPutRequestDto requestDto);
+
+    ResponseEntity<?> deleteUserById(Long id, HttpServletRequest request);
 }
