@@ -4,17 +4,18 @@ import java.math.BigDecimal;
 
 public class AccountResponseDto {
     private Long id;
+    private String owner;
     private String accountNumber;
     private String accountName;
     private String accountType;
     private BigDecimal balance;
-    private Long created_at;
-    private Long updated_at;
+    private String created_at;
+    private String updated_at;
 
     public AccountResponseDto() {
     }
 
-    public AccountResponseDto(Long id, String accountNumber, String accountName, String accountType, BigDecimal balance, Long created_at, Long updated_at) {
+    public AccountResponseDto(Long id, String owner, String accountNumber, String accountName, String accountType, BigDecimal balance, String created_at, String updated_at) {
         this.id = id;
         this.accountNumber = accountNumber;
         this.accountName = accountName;
@@ -22,6 +23,7 @@ public class AccountResponseDto {
         this.balance = balance;
         this.created_at = created_at;
         this.updated_at = updated_at;
+        this.owner = owner;
     }
 
     public Long getId() {
@@ -30,6 +32,15 @@ public class AccountResponseDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public String getAccountNumber() {
@@ -64,19 +75,19 @@ public class AccountResponseDto {
         this.balance = balance;
     }
 
-    public Long getCreated_at() {
+    public String getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(Long created_at) {
+    public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
 
-    public Long getUpdated_at() {
+    public String getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at(Long updated_at) {
+    public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
 }
