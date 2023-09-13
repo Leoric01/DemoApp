@@ -34,7 +34,6 @@ public class AccountResponseDto {
         this.id = id;
     }
 
-
     public String getOwner() {
         return owner;
     }
@@ -42,7 +41,7 @@ public class AccountResponseDto {
     public void setOwner(String owner) {
         this.owner = owner;
     }
-
+  
     public String getAccountNumber() {
         return accountNumber;
     }

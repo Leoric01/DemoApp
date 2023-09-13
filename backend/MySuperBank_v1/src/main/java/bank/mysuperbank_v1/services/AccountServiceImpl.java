@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class AccountServiceImpl implements AccountService {
-
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
     private final JwtService jwtService;
@@ -48,7 +47,6 @@ public class AccountServiceImpl implements AccountService {
         }
         return ResponseEntity.status(403).build();
     }
-
     @Override
     public ResponseEntity<?> addNewAccount(HttpServletRequest request, AccountRequestDto requestDto) {
         final String authHeader = request.getHeader("Authorization");
