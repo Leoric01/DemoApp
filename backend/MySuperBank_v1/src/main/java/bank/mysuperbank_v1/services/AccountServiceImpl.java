@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,7 +48,13 @@ public class AccountServiceImpl implements AccountService {
             return ResponseEntity.status(200).body(accountRepository.findAll().stream()
                     .map(acc -> {
                         String createdAt = acc.getFormattedCreatedAt();
-                        String updatedAt = acc.getFormattedUpdatedAt();
+                        String updatedAt;
+                        if (acc.getFormattedUpdatedAt() != null){
+                            updatedAt = acc.getFormattedUpdatedAt();
+                        }
+                        else {
+                            updatedAt = " ";
+                        }
                         if (createdAt.equals(updatedAt)) {
                             updatedAt = "No changes yet";
                         }
@@ -64,7 +71,7 @@ public class AccountServiceImpl implements AccountService {
         }
         return ResponseEntity.status(403).build();
     }
-
+    @Transactional
     @Override
     public ResponseEntity<?> addNewAccount(HttpServletRequest request, AccountRequestDto requestDto) {
         final String authHeader = request.getHeader("Authorization");
@@ -87,6 +94,11 @@ public class AccountServiceImpl implements AccountService {
         }
         if (accountRepository.existsByAccountNumber(requestDto.getAccountNumber())){
             return ResponseEntity.status(409).body("Account with same number already exists");
+        }
+        for (Account acc : user.getAccounts()){
+            if (acc.getAccountName().equals(requestDto.getAccountName())){
+                return ResponseEntity.status(409).body("You already have account with same name");
+            }
         }
         Account account = new Account(requestDto.getAccountNumber(), requestDto.getAccountName(), requestDto.getAccountType(), requestDto.getBalance(), user);
         accountRepository.save(account);
@@ -131,7 +143,7 @@ public class AccountServiceImpl implements AccountService {
             }
             return ResponseEntity.status(404).body(new ErrorResponse("User with id " + requestDto.getId() + " doesnt have account with name: " + requestDto.getCurrentName()));
         }
-        if (!user.getRole().equals("ADMIN")) {
+        if (!user.getRole().getName().equals("ADMIN")) {
             return ResponseEntity.status(403).body(new ErrorResponse("You must be role ADMIN to change account that ain't yours"));
         }
         User client = userRepository.findUserById(requestDto.getId());

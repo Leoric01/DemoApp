@@ -37,7 +37,7 @@ public class User implements UserDetails {
     }
 
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Account> accounts = new ArrayList<>();
 
     public User(String username, String firstName, String lastName, String email, String password) {
