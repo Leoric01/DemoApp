@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class AccountServiceImpl implements AccountService {
+
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
     private final JwtService jwtService;
@@ -42,7 +43,6 @@ public class AccountServiceImpl implements AccountService {
         }
         final String jwt = authHeader.substring(7);
         User user = userRepository.findUserByUsername(jwtService.extractUsername(jwt));
-
         if (user.getRole().getName().equals("ADMIN")) {
             return ResponseEntity.status(200).body(accountRepository.findAll().stream()
                     .map(acc -> {

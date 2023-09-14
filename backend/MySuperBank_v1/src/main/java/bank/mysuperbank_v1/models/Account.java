@@ -31,8 +31,6 @@ public class Account {
     @OneToMany
     private List<TransactionHistory> transactionHistories = new ArrayList<>();
 
-    //not rly sure about this one, maybe I don't wanna keep payment objects stored, just
-    //the records of those in history. we'll see
     @OneToMany
     private List<Payment> payments = new ArrayList<>();
 

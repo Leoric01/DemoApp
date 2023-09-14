@@ -12,6 +12,7 @@ import java.util.List;
 @Service
 public interface AccountService{
     ResponseEntity<List<AccountResponseDto>> getAllAccounts(HttpServletRequest request);
+  
     ResponseEntity<?> addNewAccount(HttpServletRequest request, AccountRequestDto requestDto);
 
     ResponseEntity<?> changeName(HttpServletRequest request, AccountNameRequestDto requestDto);

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.List;
 
 @RestController
@@ -28,7 +27,6 @@ public class AccountController {
     public ResponseEntity<List<AccountResponseDto>> getAllAccounts(@NotNull HttpServletRequest request){
         return accountService.getAllAccounts(request);
     }
-
 
     @PostMapping("/account")
     public ResponseEntity<?> addNewAccount(@NotNull HttpServletRequest request, @RequestBody AccountRequestDto requestDto){
