@@ -1,5 +1,6 @@
 package bank.mysuperbank_v1.services;
 
+import bank.mysuperbank_v1.models.DTOs.accountDTOs.AccountDelDto;
 import bank.mysuperbank_v1.models.DTOs.accountDTOs.AccountNameRequestDto;
 import bank.mysuperbank_v1.models.DTOs.accountDTOs.AccountRequestDto;
 import bank.mysuperbank_v1.models.DTOs.accountDTOs.AccountResponseDto;
@@ -16,4 +17,6 @@ public interface AccountService{
     ResponseEntity<?> addNewAccount(HttpServletRequest request, AccountRequestDto requestDto);
 
     ResponseEntity<?> changeName(HttpServletRequest request, AccountNameRequestDto requestDto);
+
+    ResponseEntity<?> deleteAccount(HttpServletRequest request, AccountDelDto requestDto);
 }

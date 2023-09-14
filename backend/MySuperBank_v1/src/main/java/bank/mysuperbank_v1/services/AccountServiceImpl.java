@@ -1,6 +1,7 @@
 package bank.mysuperbank_v1.services;
 
 import bank.mysuperbank_v1.models.Account;
+import bank.mysuperbank_v1.models.DTOs.accountDTOs.AccountDelDto;
 import bank.mysuperbank_v1.models.DTOs.accountDTOs.AccountNameRequestDto;
 import bank.mysuperbank_v1.models.DTOs.accountDTOs.AccountRequestDto;
 import bank.mysuperbank_v1.models.DTOs.accountDTOs.AccountResponseDto;
@@ -155,5 +156,39 @@ public class AccountServiceImpl implements AccountService {
             }
         }
         return ResponseEntity.status(404).body(new ErrorResponse("User with id " + requestDto.getId() + " doesnt have account with name: " + requestDto.getCurrentName()));
+    }
+    @Transactional
+    @Override
+    public ResponseEntity<?> deleteAccount(HttpServletRequest request, AccountDelDto requestDto) {
+        final String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(400).body(new ErrorResponse("Bearer token error"));
+        }
+        final String jwt = authHeader.substring(7);
+        User user = userRepository.findUserByUsername(jwtService.extractUsername(jwt));
+        if (requestDto.getOwnerId() == null || requestDto.getOwnerId() == user.getId()){
+            for (Account account : user.getAccounts()){
+                if ( account.getAccountName().equals(requestDto.getAccountName())){
+                    accountRepository.delete(account);
+                    return ResponseEntity.status(202).body(new SuccessResponse("Account " + requestDto.getAccountName()+ " was successfully deleted"));
+                }
+                else{
+                    return ResponseEntity.status(404).body(new ErrorResponse("You don't have account with name "+ requestDto.getAccountName()));
+                }
+            }
+        } else if (user.getRole().getName().equals("ADMIN")) {
+            User userToEdit = userRepository.findUserById(requestDto.getOwnerId());
+            if (userToEdit == null) return ResponseEntity.status(404).body(new ErrorResponse("User with id "+requestDto.getOwnerId()+" doesn't exist"));
+            for (Account account : userToEdit.getAccounts()){
+                if ( account.getAccountName().equals(requestDto.getAccountName())){
+                    accountRepository.delete(account);
+                    return ResponseEntity.status(202).body(new SuccessResponse("Account " + requestDto.getAccountName()+ " was successfully deleted"));
+                }
+                else{
+                    return ResponseEntity.status(404).body(new ErrorResponse("User with id "+requestDto.getOwnerId()+" doesn't have account with name "+ requestDto.getAccountName()));
+                }
+            }
+        }
+        return ResponseEntity.status(403).body(new ErrorResponse("Either delete your own account or be an admin"));
     }
 }
