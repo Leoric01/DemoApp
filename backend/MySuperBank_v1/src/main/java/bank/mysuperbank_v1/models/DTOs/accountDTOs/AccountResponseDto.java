@@ -34,7 +34,6 @@ public class AccountResponseDto {
         this.id = id;
     }
 
-
     public String getOwner() {
         return owner;
     }

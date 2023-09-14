@@ -1,6 +1,7 @@
 package bank.mysuperbank_v1.controllers;
 
 import bank.mysuperbank_v1.models.Account;
+import bank.mysuperbank_v1.models.DTOs.accountDTOs.AccountNameRequestDto;
 import bank.mysuperbank_v1.models.DTOs.accountDTOs.AccountRequestDto;
 import bank.mysuperbank_v1.models.DTOs.accountDTOs.AccountResponseDto;
 import bank.mysuperbank_v1.services.AccountService;
@@ -32,4 +33,8 @@ public class AccountController {
         return accountService.addNewAccount(request, requestDto);
     }
 
+    @PutMapping("/account")
+    public ResponseEntity<?> changeName(@NotNull HttpServletRequest request, @RequestBody AccountNameRequestDto requestDto){
+        return accountService.changeName(request, requestDto);
+    }
 }

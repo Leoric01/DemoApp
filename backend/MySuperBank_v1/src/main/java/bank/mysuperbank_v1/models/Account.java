@@ -24,15 +24,13 @@ public class Account {
     private Long created_at;
     private Long updated_at;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany
     private List<TransactionHistory> transactionHistories = new ArrayList<>();
 
-    //not rly sure about this one, maybe i don't wanna keep payment objects stored, just
-    //the records of those in history. we'll see
     @OneToMany
     private List<Payment> payments = new ArrayList<>();
 
