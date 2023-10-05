@@ -1,5 +1,5 @@
 # DemoApp
-bankapp with springboot training basic react, spring security, creating apis. fullstack app with frontend on p 3000 and backend on 8080, db 3306
+bankapp IN PROGRESS, NOT DONE with springboot, training basic react, spring security, creating apis. fullstack app with frontend on p 3000 and backend on 8080, db 3306
 
 list of apis with examples: create new user, all fields are mandatory
 
